@@ -1,0 +1,63 @@
+08:36:25 **** Incremental Build of configuration Debug for project prjct ****
+make all 
+Building file: ../prjct.c
+Invoking: GCC C Compiler
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"prjct.d" -MT"prjct.o" -o "prjct.o" "../prjct.c"
+../prjct.c:48:6: warning: return type of ‘main’ is not ‘int’ [-Wmain]
+   48 | void main()
+      |      ^~~~
+../prjct.c: In function ‘main’:
+../prjct.c:51:29: error: expected identifier or ‘(’ before ‘int’
+   51 |     int i, j, a1, a2, b, c, int x = 0, d, e, r;
+      |                             ^~~
+../prjct.c:72:5: warning: implicit declaration of function ‘gets’; did you mean ‘fgets’? [-Wimplicit-function-declaration]
+   72 |     gets(source);
+      |     ^~~~
+      |     fgets
+../prjct.c:147:13: error: ‘d’ undeclared (first use in this function)
+  147 |             d = cal(a1, a2, j);
+      |             ^
+../prjct.c:147:13: note: each undeclared identifier is reported only once for each function it appears in
+../prjct.c:273:13: error: ‘x’ undeclared (first use in this function)
+  273 |             x = 1;
+      |             ^
+../prjct.c:53:10: warning: unused variable ‘o’ [-Wunused-variable]
+   53 |     char o;
+      |          ^
+../prjct.c:51:26: warning: unused variable ‘c’ [-Wunused-variable]
+   51 |     int i, j, a1, a2, b, c, int x = 0, d, e, r;
+      |                          ^
+../prjct.c:51:23: warning: unused variable ‘b’ [-Wunused-variable]
+   51 |     int i, j, a1, a2, b, c, int x = 0, d, e, r;
+      |                       ^
+../prjct.c: In function ‘cal’:
+../prjct.c:305:21: warning: unused variable ‘r’ [-Wunused-variable]
+  305 |     int b, c, i, t, r, n;
+      |                     ^
+../prjct.c:305:18: warning: unused variable ‘t’ [-Wunused-variable]
+  305 |     int b, c, i, t, r, n;
+      |                  ^
+../prjct.c: In function ‘details’:
+../prjct.c:425:9: warning: implicit declaration of function ‘add_node’ [-Wimplicit-function-declaration]
+  425 |         add_node(val, gen, a);
+      |         ^~~~~~~~
+../prjct.c: At top level:
+../prjct.c:433:6: warning: conflicting types for ‘add_node’
+  433 | void add_node(char lol[20], char der[6], int b)
+      |      ^~~~~~~~
+../prjct.c:425:9: note: previous implicit declaration of ‘add_node’ was here
+  425 |         add_node(val, gen, a);
+      |         ^~~~~~~~
+../prjct.c: In function ‘bill’:
+../prjct.c:594:5: error: expected declaration or statement at end of input
+  594 |     printf("\t\t\t\tThank You!!!!");
+      |     ^~~~~~
+../prjct.c: In function ‘seat’:
+../prjct.c:531:1: warning: control reaches end of non-void function [-Wreturn-type]
+  531 | }
+      | ^
+make: *** [subdir.mk:20: prjct.o] Error 1
+"make all" terminated with exit code 2. Build might be incomplete.
+
+08:36:25 Build Failed. 5 errors, 10 warnings. (took 220ms)
+

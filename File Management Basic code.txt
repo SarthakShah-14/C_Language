@@ -1,0 +1,390 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+int no_of_record=0;
+struct student
+{
+	int rollno,sub1,sub2,sub3;
+	char name[30];
+	float per;
+}stud;
+int get_no_of_record()
+{
+	FILE *fp;
+	fp 	= fopen("Student_Record", "r");
+	no_of_record=0;
+	while (fread(&stud, sizeof(stud), 1, fp))
+	{
+		no_of_record=no_of_record+1;
+	}
+	fclose(fp);
+	return no_of_record;
+}
+void printmenu()
+{
+
+	printf("\n\t\t\t\t---Select your choice---------\n");
+	printf("\n\t\t\t\t1. INSERT");
+	printf("\n\t\t\t\t2. DISPLAY");
+	printf("\n\t\t\t\t3. SEARCH");
+	printf("\n\t\t\t\t4. DELETE");
+	printf("\n\t\t\t\t5. UPDATE");
+	printf("\n\t\t\t\t6. SORT");
+	printf("\n\t\t\t\t7. SEARCH BY NAME");
+	printf("\n\t\t\t\t8. SEARCH BY PERCENTAGE RANGE");
+	printf("\n\t\t\t\t9. EXIT");
+	printf("\n\n------------------------------------------\n");
+}
+//    FUNCTION TO INSERT RECORDS TO THE FILE
+void insert()
+{
+	FILE *fp;
+	fp 	= fopen("Student_Record", "a");
+	printf("Enter the Roll no   :");
+	scanf("%d", &stud.rollno);
+	printf("\nEnter Marks of 201, 202, 203   :");
+	scanf("%d %d %d", &stud.sub1, &stud.sub2, &stud.sub3);
+	printf("Enter the Name      :");
+	scanf("%s", stud.name);
+	stud.per=(float)((stud.sub1+stud.sub2+stud.sub3)/3);
+	fwrite(&stud, sizeof(stud), 1, fp);
+	fclose(fp);
+}
+//    FUNCTION TO DISPLAY RECORDS
+void disp()
+{
+	FILE *fp1;
+	fp1 = fopen("Student_Record", "r");
+	printf("\nRNo\tName\t201\t202\t203\tPercentage\n\n");
+	while (fread(&stud, sizeof(stud), 1, fp1))
+	{
+		printf("  %d\t%s\t%d\t%d\t%d\t%.2f\n", stud.rollno, stud.name,stud.sub1,stud.sub2,stud.sub3,stud.per);
+	}
+	fclose(fp1);
+}
+//    FUNCTION TO SEARCH THE GIVEN RECORD
+void search()
+{
+	FILE *fp2;
+	int r, s, avl;
+	printf("\nEnter the Roll no you want to search  :");
+	scanf("%d", &r);
+	avl = avlrollno(r);
+	if (avl == 0)
+		printf("Roll No %d is not available in the file\n",r);
+	else
+	{
+		fp2 = fopen("Student_Record", "r");
+		while (fread(&stud, sizeof(stud), 1, fp2))
+		{
+			s = stud.rollno;
+			if (s == r)
+			{
+				printf("  %d\t%s\t%d\t%d\t%d\t%.2f\n", stud.rollno, stud.name,stud.sub1,stud.sub2,stud.sub3,stud.per);
+			}
+		}
+		fclose(fp2);
+	}
+}
+//    FUNCTION TO DELETE A RECORD
+void searchbyname()
+{
+	FILE *fp2;
+	char sname[20];
+	int c=0;
+	printf("\nEnter the nameyou want to search  :");
+	scanf("%s", &sname);
+	fp2 = fopen("Student_Record", "r");
+	while (fread(&stud, sizeof(stud), 1, fp2))
+	{
+		if (strcmp(sname,stud.name)==0)
+		{
+			printf("  %d\t%s\t%d\t%d\t%d\t%.2f\n", stud.rollno, stud.name,stud.sub1,stud.sub2,stud.sub3,stud.per);
+			c++;
+		}
+	}
+	if(c==0)
+	{
+		printf("\n No records found with name %s",sname);
+	}
+	else
+	{
+		printf("\n %d Records found",c);
+	}
+	fclose(fp2);
+
+}
+void searchbypercentage()
+{
+	FILE *fp2;
+	float lower,higher;
+	int c=0;
+	printf("\nEnter the lower limit and upper limit of percentage :");
+	scanf("%f %f", &lower,&higher);
+	fp2 = fopen("Student_Record", "r");
+	while (fread(&stud, sizeof(stud), 1, fp2))
+	{
+		if (stud.per>=lower && stud.per<=higher)
+		{
+			printf("  %d\t%s\t%d\t%d\t%d\t%.2f\n", stud.rollno, stud.name,stud.sub1,stud.sub2,stud.sub3,stud.per);
+			c++;
+		}
+	}
+	if(c==0)
+	{
+		printf("\n No records found with range ");
+	}
+	else
+	{
+		printf("\n %d Records found",c);
+	}
+	fclose(fp2);
+
+}
+
+
+void deletefile()
+{
+	FILE *fpo;
+	FILE *fpt;
+	int r, s;
+	printf("Enter the Roll no you want to delete :");
+	scanf("%d", &r);
+	if (avlrollno(r) == 0)
+	{
+		printf("Roll no %d is not available in the file\n", r);
+	}
+	else
+	{
+		fpo = fopen("Student_Record", "r");
+		fpt = fopen("TempFile", "w");
+		while (fread(&stud, sizeof(stud), 1, fpo))
+		{
+			s = stud.rollno;
+			if (s != r)
+			{
+			fwrite(&stud, sizeof(stud), 1, fpt);
+			}
+		}
+		fclose(fpo);
+		fclose(fpt);
+		fpo = fopen("Student_Record", "w");
+		fpt = fopen("TempFile", "r");
+		while (fread(&stud, sizeof(stud), 1, fpt))
+		{
+			fwrite(&stud, sizeof(stud), 1, fpo);
+		}
+		printf("\nRECORD DELETED\n");
+
+		fclose(fpo);
+		fclose(fpt);
+	}
+
+}
+//    FUNCTION TO UPDATE THE RECORD
+void update()
+{
+	int avl;
+	FILE *fpt;
+	FILE *fpo;
+	int s, r, ch;
+	printf("Enter roll number to update:");
+	scanf("%d", &r);
+	avl = avlrollno(r);
+	if (avl == 0)
+	{
+		printf("Roll number %d is not Available in the file", r);
+	}
+	else
+	{
+		fpo = fopen("Student_Record", "r");
+		fpt = fopen("TempFile", "w");
+		while (fread(&stud, sizeof(stud), 1, fpo))
+		{
+			s = stud.rollno;
+			if (s != r)
+			{
+				fwrite(&stud, sizeof(stud), 1, fpt);
+			}
+			else
+			{
+				printf("\n\t1. Update Name of Roll Number %d", r);
+				printf("\n\t2. Update Mark of Roll Number %d", r);
+				printf("\n\t3. Update both Name and Mark of Roll Number %d", r);
+				printf("\nEnter your choice:");
+				scanf("%d", &ch);
+				switch (ch)
+				{
+					case 1:
+						printf("Enter Name:");
+						scanf("%s", stud.name);
+						break;
+					case 2:
+						printf("Enter Marks of 201,202,203: ");
+						scanf("%d %d %d", &stud.sub1,&stud.sub2,&stud.sub3);
+						stud.per=(float)((stud.sub1+stud.sub2+stud.sub3)/3);
+						break;
+					case 3:
+						printf("Enter Name: ");
+						scanf("%s", stud.name);
+						printf("Enter Marks of 201,202,203: ");
+						scanf("%d %d %d", &stud.sub1,&stud.sub2,&stud.sub3);
+						stud.per=(float)((stud.sub1+stud.sub2+stud.sub3)/3);
+						break;
+					default:
+						printf("Invalid Selection");
+						break;
+				}
+				fwrite(&stud, sizeof(stud), 1, fpt);
+			}
+		}
+		fclose(fpo);
+		fclose(fpt);
+		fpo = fopen("Student_Record", "w");
+		fpt = fopen("TempFile", "r");
+		while (fread(&stud, sizeof(stud), 1, fpt))
+		{
+			fwrite(&stud, sizeof(stud), 1, fpo);
+		}
+		fclose(fpo);
+		fclose(fpt);
+		printf("RECORD UPDATED");
+	}
+}
+/* FUNCTION TO SORT THE RECORD */
+void sort()
+{
+	int a[20], count = 0, i, j, t, c;
+	int size=get_no_of_record();
+	struct student *p,temp;
+	p=(struct student *)calloc(size,sizeof(struct student));
+	FILE *fpo;
+	fpo = fopen("Student_Record", "r");
+	for(int i=0;i<size;i++)
+	{
+		fread(p+i, sizeof(stud), 1, fpo);
+	}
+	/*while (fread(&stud, sizeof(stud), 1, fpo))
+	{
+		a[count] = stud.rollno;
+		count++;
+	}*/
+	c = size;
+	for (i = 0; i<size; i++)
+	{
+		for (j = i + 1; j<size; j++)
+		{
+			if ((p+i)->per>(p+j)->per)
+			{
+				temp = *(p+i);
+				*(p+i) =*(p+j);
+				*(p+j) = temp;
+			}
+		}
+	}
+	printf("\nRNo\tName\t201\t202\t203\tPercentage\n\n");
+	for (i = 0; i<size; i++)
+	{
+		printf("%d\t%s\t%d\t%d\t%d\t%.2f\n", (p+i)->rollno, (p+i)->name,(p+i)->sub1,(p+i)->sub2,(p+i)->sub3,(p+i)->per);
+	}
+	fclose(fpo);
+	/*count = c;
+	for (i = 0; i<size; i++)
+	{
+		rewind(fpo);
+		while (fread(&stud, sizeof(stud), 1, fpo))
+		{
+			if (a[i] == stud.rollno)
+				printf("  %d\t%s\t%d\t%d\t%d\t%.2f\n", stud.rollno, stud.name,stud.sub1,stud.sub2,stud.sub3,stud.per);
+		}
+	}*/
+}
+//    FUNCTION TO CHECK GIVEN ROLL NO IS AVAILABLE //
+int avlrollno(int rno)
+{
+	FILE *fp;
+	int c = 0;
+	fp = fopen("Student_Record", "r");
+	while (!feof(fp))
+	{
+		fread(&stud, sizeof(stud), 1, fp);
+		if (rno == stud.rollno)
+		{
+			fclose(fp);
+			return 1;
+		}
+	}
+	fclose(fp);
+	return 0;
+}
+//FUNCTION TO CHECK THE FILE IS EMPTY OR NOT
+int empty()
+{
+	int c = 0;
+	FILE *fp;
+	fp = fopen("Student_Record", "r");
+	while (fread(&stud, sizeof(stud), 1, fp))
+	{
+		c = 1;
+	}
+	fclose(fp);
+	return c;
+}
+// MAIN PROGRAM
+int main()
+{
+	int c, emp;
+	do
+	{
+		printmenu();
+		printf("\nEnter your choice:");
+		scanf("%d", &c);
+		printf("\n");
+		switch (c)
+		{
+			case 1:
+				insert();
+				break;
+			case 2:
+				emp = empty();
+				if (emp == 0)
+				{
+					printf("\nThe file is EMPTY\n");
+				}
+				else
+				{
+					disp();
+				}
+					break;
+			case 3:
+				search();
+				break;
+			case 4:
+				deletefile();
+				break;
+			case 5:
+				update();
+				break;
+			case 6:
+				emp = empty();
+				if (emp == 0)
+					printf("\n The file is EMPTY\n");
+				else
+					sort();
+				break;
+			case 7:
+				searchbyname();
+				break;
+			case 8:
+				searchbypercentage();
+				break;
+			case 9:
+				exit(1);
+				break;
+			default:
+				printf("\nYour choice is wrong\nPlease try again...\n");
+				break;
+		}
+	}while (c != 9);
+	return 0;
+}

@@ -1,0 +1,15 @@
+09:56:26 **** Incremental Build of configuration Debug for project q_3 ****
+make all 
+Building file: ../q_3.c
+Invoking: GCC C Compiler
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"q_3.d" -MT"q_3.o" -o "q_3.o" "../q_3.c"
+Finished building: ../q_3.c
+ 
+Building target: q_3
+Invoking: GCC C Linker
+gcc  -o "q_3"  ./q_3.o   
+Finished building target: q_3
+ 
+09:56:29 **** Incremental Build of configuration Debug for project q_3 ****
+make all 
+make: Nothing to be done for 'all'.

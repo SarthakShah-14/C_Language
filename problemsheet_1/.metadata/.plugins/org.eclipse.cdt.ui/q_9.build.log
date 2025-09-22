@@ -1,0 +1,6 @@
+09:43:36 **** Incremental Build of configuration Debug for project q_9 ****
+make all 
+make: Nothing to be done for 'all'.
+
+09:43:37 Build Finished. 0 errors, 0 warnings. (took 116ms)
+

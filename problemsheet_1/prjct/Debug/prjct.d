@@ -1,0 +1,1 @@
+prjct.o: ../prjct.c

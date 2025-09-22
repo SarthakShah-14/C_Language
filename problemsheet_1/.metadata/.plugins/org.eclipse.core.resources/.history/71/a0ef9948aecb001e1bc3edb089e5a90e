@@ -1,0 +1,30 @@
+/*
+ * q_30.c
+ *
+ *  Created on: 13-Feb-2024
+ *      Author: root
+ */
+#include<stdio.h>
+int power(int,int);
+int main(){
+    int base,a,result;
+    printf("Enter Number :");
+    scanf("%d",&base);
+    printf("Enter Power :");
+    scanf("%d",&a);
+     result = power(base,a);
+    printf("%d Power %d is :%d",base,a,result);
+    return 0;
+}
+int power(int base, int a)
+{
+ if(a!=0)
+ {
+	 return (base*power(base,a-1));
+ }
+ else
+ {
+	 return 1;
+ }
+}
+

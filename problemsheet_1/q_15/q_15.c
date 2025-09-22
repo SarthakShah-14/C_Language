@@ -1,0 +1,98 @@
+/*
+ * q_15.c
+ *
+ *  Created on: 09-Feb-2024
+ *      Author: root
+ */
+#include <stdio.h>
+
+int date(int dd,int mm,int yy)
+{
+    if(dd>0 && dd<=31 && mm>0 && mm<=12 && yy>1000 && yy<9999)
+    {
+        if(mm==1 || mm==3 || mm==5 || mm==7 || mm==8 || mm==10 || mm==12)
+        {
+            if(dd>0 && dd<=31)
+            {
+                return 0;
+            }
+            else
+            {
+                return 1;
+            }
+        }
+        else if(mm==4 || mm==6 || mm==9 || mm==11)
+        {
+            if(dd>0 && dd<=30)
+            {
+                return 0;
+            }
+            else
+            {
+                return 1;
+            }
+        }
+        else if(mm==2)
+        {
+            if(yy%4==0)
+            {
+                if(dd>0 && dd<=29)
+                {
+                    return 0;
+                }
+                else
+                {
+                    return 1;
+                }
+            }
+            else
+            {
+                if(dd>0 && dd<=28)
+                {
+                    return 0;
+                }
+                else
+                {
+                    return 1;
+                }
+            }
+        }
+        else
+        {
+            return 1;
+        }
+    }
+    else
+    {
+        return 1;
+    }
+
+}
+
+
+int main()
+{
+    int d,m,y,result;
+    printf("Enter Day");
+    scanf("%d",&d);
+
+    printf("Enter Month");
+    scanf("%d",&m);
+
+    printf("Enter Year");
+    scanf("%d",&y);
+
+    result=date(d,m,y);
+
+    printf("The Result is= %d",result);
+    if(result==0)
+    {
+        printf("\nValid Date");
+    }
+    else
+    {
+        printf("\nNot a Valid Date");
+    }
+    return 0;
+}
+
